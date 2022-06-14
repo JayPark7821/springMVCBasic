@@ -43,3 +43,16 @@
     
   * 쿼리 파라미터는 URL에 다음과 같이 ? 를 시작으로 보낼 수 있다. 추가 파라미터는 & 로 구분하면 된다.
     - http://localhost:8080/request-param?username=hello&age=2
+
+* ### HTTP 요청 데이터 - POST HTML Form
+  * 특징
+    content-type: application/x-www-form-urlencoded
+    메시지 바디에 쿼리 파리미터 형식으로 데이터를 전달한다. username=hello&age=20
+
+> application/x-www-form-urlencoded 형식은 앞서 GET에서 살펴본 쿼리 파라미터 형식과 같다.
+따라서 쿼리 파라미터 조회 메서드를 그대로 사용하면 된다.
+
+> - 클라이언트(웹 브라우저) 입장에서는 두 방식에 차이가 있지만, 서버 입장에서는 둘의 형식이 동일하므로,
+request.getParameter() 로 편리하게 구분없이 조회할 수 있다.
+> - 정리하면 request.getParameter() 는 GET URL 쿼리 파라미터 형식도 지원하고, POST HTML Form
+형식도 둘 다 지원한다.

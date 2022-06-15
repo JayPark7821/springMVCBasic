@@ -81,3 +81,26 @@ request.getParameter() 로 편리하게 구분없이 조회할 수 있다.
 > 
 > HTML form 데이터도 메시지 바디를 통해 전송되므로 직접 읽을 수 있다. 하지만 편리한 파리미터 조회
 기능( request.getParameter(...) )을 이미 제공하기 때문에 파라미터 조회 기능을 사용하면 된다
+> 
+
+* ### HttpServletResponse - 기본 사용법
+  * HttpServletResponse 역할
+
+  - HTTP 응답 메시지 생성
+    - HTTP 응답코드 지정
+    - 헤더 생성
+    - 바디 생성
+  - 편의 기능 제공
+    - Content-Type, 쿠키, Redirec
+
+* ### HTTP 응답 데이터 - 단순 텍스트, HTML
+  * 단순 텍스트 응답
+  * HTML 응답
+  * HTTP API - MessageBody JSON 응답
+ 
+* ### HTTP 응답 데이터 - API JSON
+  > application/json 은 스펙상 utf-8 형식을 사용하도록 정의되어 있다. 그래서 스펙에서 charset=utf-8
+  > 과 같은 추가 파라미터를 지원하지 않는다. 따라서 application/json 이라고만 사용해야지 application/json;charset=utf-8 이라고 전달하는 것은 의미 없는 파라미터를 추가한 것이 된다.
+  > 
+  > response.getWriter()를 사용하면 추가 파라미터를 자동으로 추가해버린다. 이때는
+response.getOutputStream()으로 출력하면 그런 문제가 없다.

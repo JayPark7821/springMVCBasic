@@ -104,3 +104,6 @@ request.getParameter() 로 편리하게 구분없이 조회할 수 있다.
   > 
   > response.getWriter()를 사용하면 추가 파라미터를 자동으로 추가해버린다. 이때는
 response.getOutputStream()으로 출력하면 그런 문제가 없다.
+  >
+
+* ## 서블릿, JSP, MVC 패턴

@@ -226,3 +226,6 @@ JSP를 떠올려보면 정말 지옥과 같을 것이다. (유지보수 지옥 �
 
 * ### 프론트 컨트롤러 도입 - v1
 ![image](https://user-images.githubusercontent.com/60100532/174320373-b0377c20-dcb8-4278-af5c-fc7a299178cf.png)
+
+* ### view 분리 - v2
+![image](https://user-images.githubusercontent.com/60100532/174325182-06294522-9071-4ef2-a797-45f1c0698912.png)

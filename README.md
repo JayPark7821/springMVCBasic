@@ -230,5 +230,10 @@ JSP를 떠올려보면 정말 지옥과 같을 것이다. (유지보수 지옥 �
 * ### view 분리 - v2
 ![image](https://user-images.githubusercontent.com/60100532/174325182-06294522-9071-4ef2-a797-45f1c0698912.png)
 
-* ### Model 추가 - v2
+* ### Model 추가 - v3
 ![image](https://user-images.githubusercontent.com/60100532/174332282-73825a86-8751-45bc-8c36-472555d786f4.png)
+
+* ### 단숭하고 실용적인 컨트롤러 -v4
+![image](https://user-images.githubusercontent.com/60100532/174435576-361a1a23-ea02-44c0-8bf1-e141c6cfd775.png)
+
+

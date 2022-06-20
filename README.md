@@ -246,3 +246,93 @@ JSP를 떠올려보면 정말 지옥과 같을 것이다. (유지보수 지옥 �
 >   * 어댑터 패턴을 사용해서 프론트 컨트롤러가 다양한 방식의 컨트롤러를 처리할 수 있도록 변경해보자
 * ### 유연한 컨트롤러1 -v5
 ![image](https://user-images.githubusercontent.com/60100532/174482835-5b3da09d-aa10-4df8-9ea5-f7e2f9c6b8f6.png)
+
+
+* v1: 프론트 컨트롤러를 도입
+  * 기존 구조를 최대한 유지하면서 프론트 컨트롤러를 도입
+* v2: View 분류
+  * 단순 반복 되는 뷰 로직 분리
+* v3: Model 추가
+  * 서블릿 종속성 제거
+  * 뷰 이름 중복 제거
+* v4: 단순하고 실용적인 컨트롤러
+  * v3와 거의 비슷
+  * 구현 입장에서 ModelView를 직접 생성해서 반환하지 않도록 편리한 인터페이스 제공
+* v5: 유연한 컨트롤러
+  * 어댑터 도입
+  * 어댑터를 추가해서 프레임워크를 유연하고 확장성 있게 설계
+
+
+* ### Spring MVC 전체 구조
+  * ![image](https://user-images.githubusercontent.com/60100532/174597892-f79eae13-52f6-4688-a44f-428319eb5549.png)
+
+* ### DispatcherServlet 구조 살펴보기
+DispacherServlet.doDispatch()
+```java
+protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  HttpServletRequest processedRequest = request;
+  HandlerExecutionChain mappedHandler = null;
+  ModelAndView mv = null;
+  
+  // 1. 핸들러 조회
+  mappedHandler = getHandler(processedRequest);
+  if (mappedHandler == null) {
+  noHandlerFound(processedRequest, response);
+  return;
+  }
+  
+  // 2. 핸들러 어댑터 조회 - 핸들러를 처리할 수 있는 어댑터
+  HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
+  
+  // 3. 핸들러 어댑터 실행 -> 4. 핸들러 어댑터를 통해 핸들러 실행 -> 5. ModelAndView 반환
+  mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
+  processDispatchResult(processedRequest, response, mappedHandler, mv,dispatchException);
+}
+
+private void processDispatchResult(HttpServletRequest request,HttpServletResponse response, HandlerExecutionChain mappedHandler, ModelAndView mv, Exception exception) throws Exception {
+    // 뷰 렌더링 호출
+    render(mv, request, response);
+}
+
+protected void render(ModelAndView mv, HttpServletRequest request,HttpServletResponse response) throws Exception {
+    View view;
+    String viewName = mv.getViewName();
+    // 6. 뷰 리졸버를 통해서 뷰 찾기, 7. View 반환
+    view = resolveViewName(viewName, mv.getModelInternal(), locale, request);
+    // 8. 뷰 렌더링
+    view.render(mv.getModelInternal(), request, response);
+}
+ 
+```
+
+
+* #### 동작 순서
+1. 핸들러 조회: 핸들러 매핑을 통해 요청 URL에 매핑된 핸들러(컨트롤러)를 조회한다.
+2. 핸들러 어댑터 조회: 핸들러를 실행할 수 있는 핸들러 어댑터를 조회한다.
+3. 핸들러 어댑터 실행: 핸들러 어댑터를 실행한다.
+4. 핸들러 실행: 핸들러 어댑터가 실제 핸들러를 실행한다.
+5. ModelAndView 반환: 핸들러 어댑터는 핸들러가 반환하는 정보를 ModelAndView로 변환해서
+   반환한다.
+6. viewResolver 호출: 뷰 리졸버를 찾고 실행한다.
+   JSP의 경우: InternalResourceViewResolver 가 자동 등록되고, 사용된다.
+7. View 반환: 뷰 리졸버는 뷰의 논리 이름을 물리 이름으로 바꾸고, 렌더링 역할을 담당하는 뷰 객체를
+   반환한다.
+   JSP의 경우 InternalResourceView(JstlView) 를 반환하는데, 내부에 forward() 로직이 있다.
+8. 뷰 렌더링: 뷰를 통해서 뷰를 렌더링 한다
+
+
+* ### 핸들러 매핑과 핸들러 어댑터
+> application.properties 
+> 
+> spring.mvc.view.prefix=/WEB-INF/views/
+> 
+> spring.mvc.view.suffix=.jsp
+> 
+
+* #### 뷰 리졸버 - InternalResourceViewResolver
+  - 스프링 부트는 InternalResourceViewResolver 라는 뷰 리졸버를 자동으로 등록하는데, 이때
+  application.properties 에 등록한 spring.mvc.view.prefix , spring.mvc.view.suffix 설정
+  정보를 사용해서 등록한다.
+  
+> 참고로 권장하지는 않지만 설정 없이 다음과 같이 전체 경로를 주어도 동작하기는 한다.
+  return new ModelAndView("/WEB-INF/views/new-form.jsp");

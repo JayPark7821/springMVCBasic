@@ -336,3 +336,22 @@ protected void render(ModelAndView mv, HttpServletRequest request,HttpServletRes
   
 > 참고로 권장하지는 않지만 설정 없이 다음과 같이 전체 경로를 주어도 동작하기는 한다.
   return new ModelAndView("/WEB-INF/views/new-form.jsp");
+> 
+
+* ### 스프링 MVC 시작하기
+
+@Controller
+@RequestMapping
+```java
+
+// RequestMappingHandlerMapping 
+public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMapping
+        implements MatchableHandlerMapping, EmbeddedValueResolverAware {
+    
+    @Override
+  protected boolean isHandler(Class<?> beanType) {
+    return (AnnotatedElementUtils.hasAnnotation(beanType, Controller.class) ||
+            AnnotatedElementUtils.hasAnnotation(beanType, RequestMapping.class));
+  }
+}
+```

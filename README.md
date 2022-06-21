@@ -355,3 +355,15 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
   }
 }
 ```
+
+@GetMapping
+```java
+
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@RequestMapping(method = RequestMethod.GET)
+public @interface GetMapping {
+
+}
+```
